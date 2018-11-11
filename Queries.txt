@@ -1,0 +1,4 @@
+-- Select all cities and their geo area (way)
+SELECT DISTINCT ON(name) name, way_area, way FROM planet_osm_polygon
+WHERE boundary = 'administrative' AND admin_level = '9'
+ORDER BY name ASC, way_area DESC

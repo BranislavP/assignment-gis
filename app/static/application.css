@@ -1,4 +1,22 @@
 #mapid {
-    height: 700px;
-     width: 1000px
+    height: 750px;
+     width: 100%;
  }
+
+.marker {
+  background-image: url('marker-red.png');
+  background-size: cover;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.mapboxgl-popup {
+  max-width: 200px;
+}
+
+.mapboxgl-popup-content {
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+}

@@ -11,7 +11,8 @@ RUN pip --no-cache-dir install \
 	flask-wtf \
 	flask-sqlalchemy \
 	psycopg2 \
-	Flask-Migrate
+	Flask-Migrate \
+	geojson
 
 RUN apk del build-deps
 
