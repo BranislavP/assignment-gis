@@ -2,3 +2,18 @@
 SELECT DISTINCT ON(name) name, way_area, way FROM planet_osm_polygon
 WHERE boundary = 'administrative' AND admin_level = '9'
 ORDER BY name ASC, way_area DESC
+
+SELECT l.highway, l.way FROM planet_osm_line l, planet_osm_polygon p
+WHERE l.highway in ('residential', 'tertiary', 'primary', 'unclassified', 'secondary', 'service')
+AND ST_Crosses(l.way, p.way)
+AND p.boundary = 'administrative'
+AND p.admin_level = '9'
+AND p.name = 'Pezinok'
+
+-- Extended
+SELECT l.highway, l.way, l.name, l.way_area FROM planet_osm_line l, planet_osm_polygon p
+WHERE l.highway is not null--(l.highway in ('residential', 'tertiary', 'primary', 'unclassified', 'secondary', 'service'))-- OR l.highway is null)
+AND ST_Crosses(l.way, p.way)
+AND p.boundary = 'administrative'
+AND p.admin_level = '9'
+AND p.name = 'Pezinok'

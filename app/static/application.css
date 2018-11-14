@@ -12,6 +12,10 @@
   cursor: pointer;
 }
 
+.marker_selected {
+    background-image: url('mapbox-icon.png') !important;
+}
+
 .mapboxgl-popup {
   max-width: 200px;
 }

@@ -1,0 +1,34 @@
+SELECT amenity, COUNT(*) as cunt FROM planet_osm_polygon
+WHERE amenity is not null
+GROUP BY amenity
+ORDER BY cunt DESC
+
+SELECT amenity, way_area FROM planet_osm_polygon
+WHERE amenity = 'restaurant'
+
+SELECT building, amenity from planet_osm_polygon
+where building = 'hospital'
+
+SELECT boundary as col, COUNT(*) as cunt FROM planet_osm_polygon
+WHERE boundary is not null
+GROUP BY col
+ORDER BY cunt DESC
+
+SELECT admin_level, count(*) as cunt from planet_osm_polygon
+where boundary = 'administrative' --and admin_level = '10'
+group by admin_level
+order by admin_level desc
+
+SELECT DISTINCT ON(name) name, way_area, way FROM planet_osm_polygon
+WHERE boundary = 'administrative' AND admin_level = '9'
+ORDER BY name ASC, way_area DESC
+
+
+select name, way from planet_osm_polygon
+where boundary = 'administrative'
+
+SELECT DISTINCT(admin_level) from planet_osm_polygon
+
+
+
+residential, tertiary, primary, unclassified, secondary, motorway, service
