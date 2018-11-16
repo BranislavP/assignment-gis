@@ -1,15 +1,18 @@
 #mapid {
-    height: 750px;
+    height: 600px;
      width: 100%;
  }
 
 .marker {
-  background-image: url('marker-red.png');
   background-size: cover;
   width: 25px;
   height: 25px;
   border-radius: 50%;
   cursor: pointer;
+}
+
+.simple_marker {
+    background-image: url('marker-red.png');
 }
 
 .marker_selected {
@@ -23,4 +26,129 @@
 .mapboxgl-popup-content {
   text-align: center;
   font-family: 'Open Sans', sans-serif;
+}
+
+.doctors {
+    background-image: url('markers/doctors.png');
+}
+
+.atm {
+    background-image: url('markers/atm.png');
+}
+
+.bank {
+    background-image: url('markers/bank.png');
+}
+
+.bar {
+    background-image: url('markers/bar.png');
+}
+
+.bus_station {
+    background-image: url('markers/bus_station.png');
+}
+
+.charging_station {
+    background-image: url('markers/charging_station.png');
+}
+
+.cinema {
+    background-image: url('markers/cinema.png');
+}
+
+.dentist {
+    background-image: url('markers/dentist.png');
+}
+
+.fire_station {
+    background-image: url('markers/fire_station.png');
+}
+
+.fuel {
+    background-image: url('markers/fuel.png');
+}
+
+.hospital {
+    background-image: url('markers/hospital.png');
+}
+
+.kindergarten {
+    background-image: url('markers/kindergarten.png');
+}
+
+.library {
+    background-image: url('markers/library.png');
+}
+
+.marketplace {
+    background-image: url('markers/marketplace.png');
+}
+
+.parking {
+    background-image: url('markers/parking.png');
+}
+
+.pharmacy {
+    background-image: url('markers/pharmacy.png');
+}
+
+.police {
+    background-image: url('markers/police.png');
+}
+
+.post_office {
+    background-image: url('markers/post_office.png');
+}
+
+.restaurant {
+    background-image: url('markers/restaurant.png');
+}
+
+.school {
+    background-image: url('markers/school.png');
+}
+
+.university {
+    background-image: url('markers/university.png');
+}
+
+.veterinary {
+    background-image: url('markers/veterinary.png');
+}
+
+.amenity-table-body {
+    max-height: 200px;
+    overflow-y: scroll;
+}
+
+.amenity-holder {
+    border-radius: 0 !important;
+}
+
+.zeroed-margin {
+    margin: 0 !important;
+}
+
+.btn-rect {
+    border-radius: 0 !important;
+}
+
+body {
+    font-size: 14px !important;
+}
+
+div p td th a {
+    font-size: 14px !important;
+}
+
+* {
+    font-size: 14px !important;
+}
+
+h1 {
+    font-size: 20px !important;
+}
+
+h5 {
+    font-size: 16px !important;
 }

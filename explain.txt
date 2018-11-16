@@ -1,0 +1,197 @@
+- Plan: 
+    Node Type: "Sort"
+    Parallel Aware: false
+    Startup Cost: 168731.03
+    Total Cost: 168746.19
+    Plan Rows: 6065
+    Plan Width: 160
+    Actual Startup Time: 3954.021
+    Actual Total Time: 3954.030
+    Actual Rows: 121
+    Actual Loops: 1
+    Sort Key: 
+      - "planet_osm_point.amenity"
+    Sort Method: "quicksort"
+    Sort Space Used: 86
+    Sort Space Type: "Memory"
+    Plans: 
+      - Node Type: "Limit"
+        Parent Relationship: "InitPlan"
+        Subplan Name: "CTE city"
+        Parallel Aware: false
+        Startup Cost: 0.00
+        Total Cost: 113329.52
+        Plan Rows: 1
+        Plan Width: 218
+        Actual Startup Time: 0.087
+        Actual Total Time: 0.087
+        Actual Rows: 1
+        Actual Loops: 1
+        Plans: 
+          - Node Type: "Unique"
+            Parent Relationship: "Outer"
+            Parallel Aware: false
+            Startup Cost: 0.00
+            Total Cost: 113329.52
+            Plan Rows: 1
+            Plan Width: 218
+            Actual Startup Time: 0.087
+            Actual Total Time: 0.087
+            Actual Rows: 1
+            Actual Loops: 1
+            Plans: 
+              - Node Type: "Seq Scan"
+                Parent Relationship: "Outer"
+                Parallel Aware: false
+                Relation Name: "planet_osm_polygon"
+                Alias: "planet_osm_polygon_1"
+                Startup Cost: 0.00
+                Total Cost: 113329.52
+                Plan Rows: 1
+                Plan Width: 218
+                Actual Startup Time: 0.085
+                Actual Total Time: 0.085
+                Actual Rows: 1
+                Actual Loops: 1
+                Filter: "((boundary = 'administrative'::text) AND (admin_level = '9'::text) AND (name = 'Pezinok'::text))"
+                Rows Removed by Filter: 257
+      - Node Type: "Aggregate"
+        Strategy: "Hashed"
+        Partial Mode: "Simple"
+        Parent Relationship: "Outer"
+        Parallel Aware: false
+        Startup Cost: 54959.78
+        Total Cost: 55020.43
+        Plan Rows: 6065
+        Plan Width: 160
+        Actual Startup Time: 3953.930
+        Actual Total Time: 3953.966
+        Actual Rows: 121
+        Actual Loops: 1
+        Group Key: 
+          - "planet_osm_point.name"
+          - "planet_osm_point.amenity"
+          - "('point'::text)"
+          - "(st_asgeojson(st_transform(planet_osm_point.way, 4326), 15, 0))"
+          - "(st_asgeojson(st_transform(st_centroid(planet_osm_point.way), 4326), 15, 0))"
+        Plans: 
+          - Node Type: "Append"
+            Parent Relationship: "Outer"
+            Parallel Aware: false
+            Startup Cost: 95.25
+            Total Cost: 54883.97
+            Plan Rows: 6065
+            Plan Width: 160
+            Actual Startup Time: 348.739
+            Actual Total Time: 3953.653
+            Actual Rows: 121
+            Actual Loops: 1
+            Plans: 
+              - Node Type: "Bitmap Heap Scan"
+                Parent Relationship: "Member"
+                Parallel Aware: false
+                Relation Name: "planet_osm_point"
+                Alias: "planet_osm_point"
+                Startup Cost: 95.25
+                Total Cost: 18380.98
+                Plan Rows: 2334
+                Plan Width: 118
+                Actual Startup Time: 348.739
+                Actual Total Time: 1576.602
+                Actual Rows: 36
+                Actual Loops: 1
+                Recheck Cond: "(amenity = ANY ('{parking,fuel,atm,pharmacy,bar}'::text[]))"
+                Rows Removed by Index Recheck: 0
+                Filter: "st_contains(st_transform($2, 4326), st_transform(way, 4326))"
+                Rows Removed by Filter: 6994
+                Exact Heap Blocks: 2609
+                Lossy Heap Blocks: 0
+                Plans: 
+                  - Node Type: "Limit"
+                    Parent Relationship: "InitPlan"
+                    Subplan Name: "InitPlan 3 (returns $2)"
+                    Parallel Aware: false
+                    Startup Cost: 0.00
+                    Total Cost: 0.02
+                    Plan Rows: 1
+                    Plan Width: 32
+                    Actual Startup Time: 0.092
+                    Actual Total Time: 0.093
+                    Actual Rows: 1
+                    Actual Loops: 1
+                    Plans: 
+                      - Node Type: "CTE Scan"
+                        Parent Relationship: "Outer"
+                        Parallel Aware: false
+                        CTE Name: "city"
+                        Alias: "city_1"
+                        Startup Cost: 0.00
+                        Total Cost: 0.02
+                        Plan Rows: 1
+                        Plan Width: 32
+                        Actual Startup Time: 0.091
+                        Actual Total Time: 0.091
+                        Actual Rows: 1
+                        Actual Loops: 1
+                  - Node Type: "Bitmap Index Scan"
+                    Parent Relationship: "Outer"
+                    Parallel Aware: false
+                    Index Name: "planet_osm_point_amenity_idx"
+                    Startup Cost: 0.00
+                    Total Cost: 94.65
+                    Plan Rows: 7003
+                    Plan Width: 0
+                    Actual Startup Time: 1.131
+                    Actual Total Time: 1.131
+                    Actual Rows: 7030
+                    Actual Loops: 1
+                    Index Cond: "(amenity = ANY ('{parking,fuel,atm,pharmacy,bar}'::text[]))"
+              - Node Type: "Index Scan"
+                Parent Relationship: "Member"
+                Parallel Aware: false
+                Scan Direction: "Forward"
+                Index Name: "planet_osm_polygon_amenity_idx"
+                Relation Name: "planet_osm_polygon"
+                Alias: "planet_osm_polygon"
+                Startup Cost: 0.45
+                Total Cost: 36442.33
+                Plan Rows: 3731
+                Plan Width: 121
+                Actual Startup Time: 17.815
+                Actual Total Time: 2377.018
+                Actual Rows: 85
+                Actual Loops: 1
+                Index Cond: "(amenity = ANY ('{parking,fuel,atm,pharmacy,bar}'::text[]))"
+                Rows Removed by Index Recheck: 0
+                Filter: "st_contains(st_transform($1, 4326), st_transform(way, 4326))"
+                Rows Removed by Filter: 10898
+                Plans: 
+                  - Node Type: "Limit"
+                    Parent Relationship: "InitPlan"
+                    Subplan Name: "InitPlan 2 (returns $1)"
+                    Parallel Aware: false
+                    Startup Cost: 0.00
+                    Total Cost: 0.02
+                    Plan Rows: 1
+                    Plan Width: 32
+                    Actual Startup Time: 0.002
+                    Actual Total Time: 0.002
+                    Actual Rows: 1
+                    Actual Loops: 1
+                    Plans: 
+                      - Node Type: "CTE Scan"
+                        Parent Relationship: "Outer"
+                        Parallel Aware: false
+                        CTE Name: "city"
+                        Alias: "city"
+                        Startup Cost: 0.00
+                        Total Cost: 0.02
+                        Plan Rows: 1
+                        Plan Width: 32
+                        Actual Startup Time: 0.001
+                        Actual Total Time: 0.001
+                        Actual Rows: 1
+                        Actual Loops: 1
+  Planning Time: 0.456
+  Triggers: 
+  Execution Time: 3954.182

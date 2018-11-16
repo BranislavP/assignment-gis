@@ -3,7 +3,7 @@ from app import app
 from flask_sqlalchemy import SQLAlchemy
 from .modules.functions import transform_data_to_geojson
 from .modules import queries
-from .modules.forms import AmenityDistanceForm
+from .modules.forms import AmenityDistanceForm, amenity_city_form, city_roads_form
 from .modules.exceptions import InvalidUsage
 
 
@@ -19,7 +19,10 @@ def index():
     #polygons = transform_data_to_geojson([geo['geom'] for geo in result])
     #print('Done transform')
     form = AmenityDistanceForm()
-    return render_template('index.html', title='Home', user=user, form=form)#, geoms=polygons)
+    city_query_results = db.engine.execute(queries.get_cities_possibility()).fetchall()
+    city_form = amenity_city_form(city_query_results)
+    roads_form = city_roads_form(city_query_results)
+    return render_template('index.html', title='Home', user=user, form=form, city_form=city_form, roads_form=roads_form)#, geoms=polygons)
 
 
 @app.route('/cities_geojson')
@@ -42,6 +45,33 @@ def amenities_from_point():
         return jsonify(points)
     else:
         raise InvalidUsage('There were uninitialized parameters!', status_code=418)
+
+
+@app.route('/amenities_in_city', methods=['Post'])
+def amenities_in_city():
+    city = request.form.get('cities')
+    amenities = request.form.getlist('amenities')
+    if city and amenities:
+        amenities.append('EMPTY_HACK')
+        result = db.engine.execute(queries.get_geojson_amenities_in_city(city_name=city, amenities=tuple(amenities))).fetchall()
+        points = transform_data_to_geojson([geo for geo in result])
+        return jsonify(points)
+    else:
+        raise InvalidUsage('There were uninitialized parameters!', status_code=418)
+
+
+@app.route('/roads_leaving_city', methods=['POST'])
+def roads_leaving_city():
+    city = request.form.get('cities')
+    print(request.form.get)
+    if city:
+        result = db.engine.execute(queries.get_geojson_roads_leaving_city(city_name=city)).fetchall()
+        points = transform_data_to_geojson([geo for geo in result])
+        return jsonify(points)
+    else:
+        raise InvalidUsage('There were uninitialized parameters!', status_code=418)
+
+
 
 
 
