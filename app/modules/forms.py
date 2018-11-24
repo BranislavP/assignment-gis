@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, HiddenField, FloatField, SelectMultipleField, SelectField, StringField
+from wtforms import HiddenField, FloatField, SelectMultipleField, SelectField, StringField
 from wtforms.validators import DataRequired, NumberRange
 from .settings import SELECTABLE_AMENITIES
 
@@ -10,16 +10,6 @@ class AmenityDistanceForm(FlaskForm):
     amenities = SelectMultipleField('Amenities', validators=[DataRequired()], choices=choices)
     lng = HiddenField('Lng')
     lat = HiddenField('Lat')
-
-'''
-class AmenityCityForm(FlaskForm):
-    
-
-    def __init__(self, choices, *args, **kwargs):
-        cities_choices = [(row['name'], row['name']) for row in choices]
-        self.cities = SelectField('City', validators=[DataRequired()], choices=cities_choices)
-        super(AmenityCityForm, self).__init__(*args, **kwargs)
-        '''
 
 
 def amenity_city_form(choices, **kwargs):
@@ -45,3 +35,13 @@ def city_roads_form(choices, **kwargs):
 
     return CityRoadsForm(**kwargs)
 
+
+def city_water_houses_form(choices, **kwargs):
+    class WaterHouseForm(FlaskForm):
+        cities = StringField('City')
+
+    cities_choices = [(row['name'], row['name']) for row in choices]
+    field = SelectField('City', validators=[DataRequired()], choices=cities_choices)
+    setattr(WaterHouseForm, 'cities', field)
+
+    return WaterHouseForm(**kwargs)
