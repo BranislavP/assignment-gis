@@ -1,0 +1,36 @@
+-- great
+CREATE INDEX geography_transformed_polygon ON planet_osm_polygon USING gist( geography(ST_Transform(way, 4326)) );
+CREATE INDEX geography_transformed_point ON planet_osm_point USING gist( geography(ST_Transform(way, 4326)) );
+CREATE INDEX polygon_name_way_area_sort ON planet_osm_polygon(name, way_area);
+-- so so
+CREATE INDEX polygon_amenity ON planet_osm_polygon(amenity);
+CREATE INDEX polygon_shop ON planet_osm_polygon(shop);
+CREATE INDEX polygon_building ON planet_osm_polygon(building);
+CREATE INDEX polygon_water ON planet_osm_polygon(water);
+CREATE INDEX polygon_natural ON planet_osm_polygon("natural");
+CREATE INDEX point_amenity ON planet_osm_point(amenity);
+CREATE INDEX point_shop ON planet_osm_point(shop);
+CREATE INDEX line_highway ON planet_osm_line(highway);
+-- not doing much
+CREATE INDEX geometry_transformed_polygon ON planet_osm_polygon USING gist( geometry(ST_Transform(way, 4326)) );
+CREATE INDEX geometry_transformed_point ON planet_osm_point USING gist( geometry(ST_Transform(way, 4326)) );
+CREATE INDEX polygon_boundary_admin_name ON planet_osm_polygon(boundary, admin_level, name);
+CREATE INDEX polygon_name ON planet_osm_polygon(name);
+CREATE INDEX point_name ON planet_osm_point(name);
+CREATE INDEX geometry_simple_polygon ON planet_osm_polygon USING gist( way );
+CREATE INDEX geometry_simple_point ON planet_osm_point USING gist( way );
+CREATE INDEX geometry_simple_line ON planet_osm_line USING gist( way );
+CREATE INDEX geography_buffer_polygon ON planet_osm_polygon USING gist( st_buffer( geography(st_transform(way, 4326)), 500 ) );
+-- needed
+VACUUM ANALYSE planet_osm_polygon;
+VACUUM ANALYSE planet_osm_point;
+VACUUM ANALYSE planet_osm_line;
+
+DROP INDEX geography_buffer_polygon;
+DROP INDEX geography_transformed_point;
+DROP INDEX geography_transformed_polygon;
+DROP INDEX geometry_transformed_polygon;
+DROP INDEX geometry_transformed_point;
+DROP INDEX geometry_simple_line;
+DROP INDEX geometry_simple_polygon;
+DROP INDEX geometry_simple_point;

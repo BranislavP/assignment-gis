@@ -8,12 +8,12 @@ def get_geojson_cities_query():
 
 
 def get_geojson_amenities_query(lat, lng, distance, amenities):
-    return "SELECT name, amenity, shop, 'point' AS type, ST_AsGeoJSON(ST_Transform(way, 4326)::geometry) AS geom, ST_Distance_Sphere(ST_SetSRID(ST_MakePoint({0}, {1}),4326), ST_Transform(way, 4326)) AS distance, way, ST_AsGeoJSON(ST_Transform(ST_Centroid(way), 4326)::geometry) AS centroid " \
+    return "SELECT name, amenity, shop, 'point' AS type, ST_AsGeoJSON(ST_Transform(way, 4326)::geometry) AS geom, ST_Distance_Sphere(ST_SetSRID(ST_MakePoint({0}, {1}),4326), ST_Transform(way, 4326)) AS distance, ST_AsGeoJSON(ST_Transform(ST_Centroid(way), 4326)::geometry) AS centroid " \
            "FROM planet_osm_point " \
            "WHERE (amenity in {2} OR {4} ) " \
            "AND ST_DWithin(ST_SetSRID(ST_MakePoint({0}, {1}),4326)::geography, ST_Transform(way, 4326)::geography, {3}) " \
            "UNION " \
-           "SELECT name, amenity, shop, 'polygon' AS type, ST_AsGeoJSON(ST_Transform(way, 4326)::geometry) AS geom, ST_Distance_Sphere(ST_SetSRID(ST_MakePoint({0}, {1}),4326), ST_Transform(way, 4326)) AS distance, way, ST_AsGeoJSON(ST_Transform(ST_Centroid(way), 4326)::geometry) AS centroid " \
+           "SELECT name, amenity, shop, 'polygon' AS type, ST_AsGeoJSON(ST_Transform(way, 4326)::geometry) AS geom, ST_Distance_Sphere(ST_SetSRID(ST_MakePoint({0}, {1}),4326), ST_Transform(way, 4326)) AS distance, ST_AsGeoJSON(ST_Transform(ST_Centroid(way), 4326)::geometry) AS centroid " \
            "FROM planet_osm_polygon " \
            "WHERE (amenity in {2} OR {4} ) " \
            "AND ST_DWithin(ST_SetSRID(ST_MakePoint({0}, {1}),4326)::geography, ST_Transform(way, 4326)::geography, {3}) " \
@@ -53,17 +53,18 @@ def get_geojson_amenities_in_city(city_name, amenities):
 
 def get_geojson_roads_leaving_city(city_name):
      return "WITH city AS (" \
-           "SELECT DISTINCT ON(name) name, way_area, way " \
-           "FROM planet_osm_polygon " \
-           "WHERE boundary = 'administrative' " \
-           "AND admin_level = '9' " \
-           "AND name = '{0}' " \
-           "ORDER BY name ASC, way_area DESC " \
-           "LIMIT 1) " \
-           "SELECT l.name, 'line' AS type, ST_AsGeoJSON(ST_Transform(l.way, 4326)::geometry) AS geom, ST_Length(ST_Transform(l.way, 26986)::geometry) AS len, ST_AsGeoJSON(ST_Line_Interpolate_Point(ST_Transform(l.way, 4326)::geometry, 0.5)) AS centroid, l.highway " \
-           "FROM planet_osm_line l " \
-           "JOIN city c ON st_crosses(l.way, c.way) " \
-           "WHERE highway in ('residential', 'tertiary', 'primary', 'secondary', 'service') ".format(city_name)
+            "SELECT DISTINCT ON(name) name, way_area, way " \
+            "FROM planet_osm_polygon " \
+            "WHERE boundary = 'administrative' " \
+            "AND admin_level = '9' " \
+            "AND name = '{0}' " \
+            "ORDER BY name ASC, way_area DESC " \
+            "LIMIT 1) " \
+            "SELECT l.name, 'line' AS type, ST_AsGeoJSON(ST_Transform(l.way, 4326)::geometry) AS geom, ST_Length(ST_Transform(l.way, 26986)::geometry) AS len, ST_AsGeoJSON(ST_Line_Interpolate_Point(ST_Transform(l.way, 4326)::geometry, 0.5)) AS centroid, l.highway " \
+            "FROM planet_osm_line l " \
+            "JOIN city c ON st_crosses(l.way, c.way) " \
+            "WHERE highway in ('residential', 'tertiary', 'primary', 'secondary', 'service') " \
+            "ORDER BY highway ".format(city_name)
 
 
 def get_water_houses_in_city(city_name):
@@ -84,4 +85,5 @@ def get_water_houses_in_city(city_name):
            "FROM planet_osm_polygon h " \
            "JOIN water w ON st_intersects(st_transform(h.way, 4326)::geography, w.way) " \
            "JOIN city c ON st_intersects(h.way, c.way) " \
-           "WHERE building in ('yes', 'garage', 'house', 'apartmenrs', 'detached', 'residential', 'garages', 'hut', 'cabin', 'hotel') ".format(city_name)
+           "WHERE building in ('yes', 'garage', 'house', 'apartmenrs', 'detached', 'residential', 'garages', 'hut', 'cabin', 'hotel') " \
+           "ORDER BY building ".format(city_name)

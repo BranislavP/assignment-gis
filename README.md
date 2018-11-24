@@ -20,8 +20,14 @@ Build a map-based application, which lets the user see geo-based data on a map a
 
 Fill in (either in English, or in Slovak):
 
-**Application description**: `<fill in>`
+**Application description**: The application that lets the user find interesting locations on the map. The scenarios includ:
 
-**Data source**: `<fill in>`
+- Finding different amenities (shops, pharmacies, parking etc.) that are located around a given point. User can choose the point from which the distance is calculated, the maximum distance that is searched and the list of amenities looked for. The result is sorted by the amenity type and distance from the given point.
+- Finding amenities in city. Similar to the previous one, however a city is given, not point and distance.
+- Showing all cities and its borders on Slovakia.
+- Finding all roads that are leaving a given city.
+- Finding houses in a given city that are near any water (lake, river etc.).
 
-**Technologies used**: `<fill in>`
+**Data source**: `Open Street Maps - Slovak region`
+
+**Technologies used**: `python: flask, sqlalchemy, geojson; javascript: mapbox-gl.js, jquery, select2`
