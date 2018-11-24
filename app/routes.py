@@ -1,13 +1,11 @@
 from flask import render_template, jsonify, request
 from app import app
-from flask_sqlalchemy import SQLAlchemy
-from .modules.functions import transform_data_to_geojson
-from .modules import queries
-from .modules.forms import AmenityDistanceForm, amenity_city_form, city_roads_form, city_water_houses_form
-from .modules.exceptions import InvalidUsage
+from app.modules.functions import transform_data_to_geojson
+from app.modules import queries
+from app.modules.forms import AmenityDistanceForm, amenity_city_form, city_roads_form, city_water_houses_form
+from app.modules.exceptions import InvalidUsage
+from app import db
 
-
-db = SQLAlchemy(app)
 
 @app.route('/')
 @app.route('/index')
