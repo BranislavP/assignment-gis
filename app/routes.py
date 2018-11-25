@@ -33,8 +33,7 @@ def amenities_from_point():
     amenities = request.form.getlist('amenities')
     distance = request.form.get('distance')
     if lng and lat and distance and amenities:
-        amenities.append(' ')
-        result = db.engine.execute(queries.get_geojson_amenities_query(lat=lat, lng=lng, amenities=tuple(amenities), distance=distance)).fetchall()
+        result = db.engine.execute(queries.get_geojson_amenities_query(amenities=amenities), y=lat, x=lng, distance=distance, amenities=tuple(amenities)).fetchall()
         print('Database done!')
         points = transform_data_to_geojson([geo for geo in result])
         return jsonify(points)
@@ -47,8 +46,7 @@ def amenities_in_city():
     city = request.form.get('cities')
     amenities = request.form.getlist('amenities')
     if city and amenities:
-        amenities.append(' ')
-        result = db.engine.execute(queries.get_geojson_amenities_in_city(city_name=city, amenities=tuple(amenities))).fetchall()
+        result = db.engine.execute(queries.get_geojson_amenities_in_city(amenities=amenities), name=city, amenities=tuple(amenities)).fetchall()
         print('Database done!')
         points = transform_data_to_geojson([geo for geo in result])
         return jsonify(points)
@@ -60,7 +58,7 @@ def amenities_in_city():
 def roads_leaving_city():
     city = request.form.get('cities')
     if city:
-        result = db.engine.execute(queries.get_geojson_roads_leaving_city(city_name=city)).fetchall()
+        result = db.engine.execute(queries.get_geojson_roads_leaving_city(), name=city).fetchall()
         print('Database done!')
         points = transform_data_to_geojson([geo for geo in result])
         return jsonify(points)
@@ -72,7 +70,7 @@ def roads_leaving_city():
 def city_water_houses():
     city = request.form.get('cities')
     if city:
-        result = db.engine.execute(queries.get_water_houses_in_city(city_name=city)).fetchall()
+        result = db.engine.execute(queries.get_water_houses_in_city(), name=city).fetchall()
         print('Database done!')
         polygons = transform_data_to_geojson([geo for geo in result])
         return jsonify(polygons)
