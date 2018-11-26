@@ -16,7 +16,7 @@ Build a map-based application, which lets the user see geo-based data on a map a
 
 - [Open Street Maps](https://www.openstreetmap.org/)
 
-## My project
+## My project - Branislav Pecher
 
 Fill in (either in English, or in Slovak):
 

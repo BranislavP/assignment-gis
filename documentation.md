@@ -1,4 +1,5 @@
 # Overview
+_Name: Branislav Pecher_
 
 This application shows interesting locations on a map. The different scenarios include the following:
 
