@@ -82,7 +82,7 @@ def get_geojson_amenities_in_city(amenities):
                     "SELECT p.name, p.amenity, p.shop, 'polygon' AS type, ST_AsGeoJSON(ST_Transform(p.way, 4326)::geometry) as geom, ST_AsGeoJSON(ST_Transform(ST_Centroid(p.way), 4326)::geometry) AS centroid "
                     "FROM planet_osm_polygon p "
                     "JOIN city c ON st_contains(c.way, p.way) "
-                    "WHERE (p.amenity in :amenities OR ) "
+                    "WHERE (p.amenity in :amenities ) "
                     "ORDER BY amenity")
 
 
